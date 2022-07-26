@@ -31,7 +31,8 @@ It should have methods to add new object, remove object and move object.
     {category: '1', 
     tasks:
             [{task1},
-             {task2}] 
+             {task2},
+             {category...}], 
     } 
 ]
     
