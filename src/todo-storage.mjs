@@ -1,5 +1,71 @@
 import { parse, isValid, format } from 'date-fns';
 
+export const toDoList = [];
+
+export class Project{
+    #title;
+    #priority;
+    #isDone;
+    #tasks;
+    constructor(title = 'Default', priority=false){
+        if (title === ''){
+            throw 'Title can not be empty';
+        }
+        this.#title = title;
+        this.#priority = priority;
+        this.#isDone = false;
+        this.#tasks = [];
+    }
+
+    set title(str){
+        if (str === ''){
+        throw 'Title can not be empty';
+    }
+    this.#title=str;
+    }
+
+    set priority(bool){
+        if(!typeof bool === 'boolean'){
+            throw 'Priority must be boolean'
+        }       
+        this.#priority = bool;
+    }
+    set isDone(bool){
+        if(!typeof bool === 'boolean'){
+            throw 'isDone must be boolean'
+        } 
+        this.#isDone = bool;      
+    }
+    
+    get title(){
+        return this.#title;
+    }
+    get priority(){
+        return this.#priority;
+    }
+    get isDone(){
+        return this.#isDone;
+    }
+    
+    get tasks(){
+        return this.#tasks;
+    }
+    
+    add(obj, index){
+        if(index === undefined){
+            this.#tasks.push(obj);
+        }else {
+            this.#tasks.splice(index, 0, obj);
+        }
+    }
+
+    delete(obj){
+        this.#tasks.splice(this.#tasks.indexOf(obj), 1);
+    }
+}
+
+
+
 export class ToDo{
     #title;
     #dueDate;
@@ -110,3 +176,20 @@ export class ToDo{
     }
 }
 
+
+export function deleteElement(obj, objContainer){
+    if (objContainer instanceof Array) {
+        objContainer.splice(objContainer.indexOf(obj), 1);
+    } else {
+        objContainer.delete(obj);
+    }
+}
+
+export function moveElement(obj, from, to, index){
+    deleteElement(obj, from);
+    if(to instanceof Array){
+        to.splice(index, 1, obj);
+    } else {
+        to.add(obj, index)
+    }
+}

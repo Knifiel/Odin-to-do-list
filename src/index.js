@@ -1,11 +1,19 @@
-import { Project } from "./projects.mjs";
-import { ToDo } from "./todo.mjs";
+import { populate } from "./interface.mjs";
+import {Project, ToDo, toDoList} from "./todo-storage.mjs";
 
-const mainProject = new Project('main');
-const defaultProject = new Project('Hello!')
-const defaultTask = new ToDo('And Welcome!');
-mainProject.add(defaultProject);
-defaultProject.add(defaultTask);
-console.log(mainProject);
-console.log(defaultProject);
 
+(function makeMainProjects(){
+    const defaultProject = new Project('Hello!')
+    const defaultTask = new ToDo('And Welcome!');
+    defaultTask.description = 'Please feel free to change everything';
+
+
+    toDoList.push(defaultProject);
+    defaultProject.add(defaultTask, 0);
+
+    const array = [{text: 'This is checklist', isDone:false}, {text:'Use it however you want',isDone:true}]
+    defaultTask.checklist = array;
+})();
+
+console.log(toDoList);
+populate(toDoList, document.getElementById('content'));
