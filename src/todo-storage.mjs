@@ -64,8 +64,6 @@ export class Project{
     }
 }
 
-
-
 export class ToDo{
     #title;
     #dueDate;
@@ -74,12 +72,12 @@ export class ToDo{
     #description;
     #checklist;
 
-    constructor(title='New Task', dueDate=format(new Date(), 'P'), priority=false, isDone=false, description = "", checklist = []){
+    constructor(title='New Task', dueDate=format(new Date(), 'yyyy-MM-dd'), priority=false, isDone=false, description = "", checklist = []){
     
         if (title === ''){
             throw 'Title can not be empty';
         }
-        if(!isValid(parse(dueDate, 'P', new Date()))){
+        if(!isValid(parse(dueDate, 'yyyy-MM-dd', new Date()))){
             throw 'Date format is invalid';
         }
         if(!typeof priority === 'boolean'){
@@ -93,7 +91,8 @@ export class ToDo{
         }
         if(!Array.isArray(checklist)){
             throw 'Only arrays may be used in checklists'
-        }        
+        }
+
     this.#title=title;
     this.#dueDate=dueDate;
     this.#priority=priority;
@@ -114,10 +113,10 @@ export class ToDo{
      * @param {string} date
      */
     set dueDate(date){
-    if(!isValid(parse(date, 'P', new Date()))){
+    if(!isValid(parse(date, 'yyyy-MM-dd', new Date()))){
         throw 'Date format is invalid';
-    }
-        this.#dueDate = date;
+        }
+        this.#dueDate = parse(date, 'yyyy-MM-dd', new Date());
     }
     /**
      * @param {boolean} priority
@@ -175,7 +174,6 @@ export class ToDo{
         return this.#checklist;
     }
 }
-
 
 export function deleteElement(obj, objContainer){
     if (objContainer instanceof Array) {

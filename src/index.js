@@ -1,4 +1,5 @@
-import { populate } from "./interface.mjs";
+import { makeMainMenu } from "./interface.mjs";
+import { populate } from "./elementCreation.mjs";
 import {Project, ToDo, toDoList} from "./todo-storage.mjs";
 
 
@@ -16,4 +17,5 @@ import {Project, ToDo, toDoList} from "./todo-storage.mjs";
 })();
 
 console.log(toDoList);
+makeMainMenu();
 populate(toDoList, document.getElementById('content'));
