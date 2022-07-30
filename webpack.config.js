@@ -1,3 +1,5 @@
+var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+var webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -9,7 +11,20 @@ module.exports = {
     filename: 'index_bundle.js',
     clean: true
   },
-  plugins: [
+  module: {
+    rules: [{
+    use: 'babel-loader',
+      test: /\.js$/,
+      exclude: /node_modules/,
+      options: {
+        plugins: ['lodash'],
+        presets: [['env', { modules: false, targets: { node: 4 } }]]
+      }
+    }]
+  },
+  'plugins': [
+    new LodashModuleReplacementPlugin,
+    new webpack.optimize.UglifyJsPlugin,
     new HtmlWebpackPlugin()
   ]
 }

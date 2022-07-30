@@ -1,61 +1,53 @@
-import { deleteElement, Project, ToDo, toDoList } from "./todo-storage.mjs";
+import { ToDo } from "./todo-storage.mjs";
 import { format } from 'date-fns';
 import { parseForm } from "./formParser.mjs";
 
 export function populate(obj, rootNode){
-    if(obj instanceof Array){
-    obj.forEach((element) => {        
-        const div = createElement(element, obj);
+    obj.array.forEach((todo) => {        
+        const div = createElement(todo);
         rootNode.appendChild(div);
     });
-    } else {
-        throw 'Populate only works with arrays'
-    }
 }
 
-function createElement(element, obj){
+function createElement(todo, list){    
     const div = document.createElement("div");
+    
     const header = document.createElement('h3');
-    header.textContent = element.title;
+    header.textContent = todo.title;
+    makeEditable(header, todo, 'title');
     
-    makeEditable(header, element, 'title');
+    div.classList.add('todo');
+    const description = document.createElement('p');
+    description.textContent = todo.description;
+    description.classList.add('description');
+    makeEditable(description, todo, 'description');
     
-    div.appendChild(header);
-    addButtons(div, element, obj);
+    const dueDate = document.createElement('input');
+    dueDate.setAttribute('type', 'date');
+    dueDate.classList.add('dueDate');
+    dueDate.defaultValue = todo.dueDate;
+    dueDate.addEventListener('input', () => {
+        if(todo.dueDate !== dueDate.value){
+            todo.dueDate = dueDate.value;
+        } 
+    });
 
-    if(element instanceof Project){
-        div.classList.add('project');
-        if (element.tasks.length>0){
-        populate(element.tasks, div);                 
-        }
-    }
-
-    if(element instanceof ToDo){
-        div.classList.add('todo');
-        const description = document.createElement('p');
-        description.textContent = element.description;
-        description.classList.add('description');
-        makeEditable(description, element, 'description');
-
-        const dueDate = document.createElement('input');
-        dueDate.setAttribute('type', 'date');
-        dueDate.classList.add('dueDate');
-        dueDate.defaultValue = element.dueDate;
-        console.log(element.dueDate);
-        dueDate.addEventListener('input', () => {
-            if(element.dueDate !== dueDate.value){
-                element.dueDate = dueDate.value;
-            } 
+    const project = document.createElement('select');
+        list.project.forEach(project => {
+            project.appendChild(document.createElement('option').value = project);
         })
 
-        div.appendChild(dueDate);
-        div.appendChild(description);
 
-        if(element.checklist.length>0){
-        const checklist = createChecklist(element.checklist);
+    div.appendChild(header);
+    div.appendChild(dueDate);
+    div.appendChild(description);
+    
+    if(todo.checklist.length>0){
+        const checklist = createChecklist(todo.checklist);
         div.appendChild(checklist);
-        }
     }
+    
+    addButtons(div, todo, list);
     return div;
 }
 
@@ -79,7 +71,7 @@ function createChecklist(arr){
 }
 
 
-function addButtons(div, obj, objContainer){
+function addButtons(div, obj, lib){
     const priority = makeCheckbox(obj, 'priority');
     const isDone = makeCheckbox(obj, 'isDone');
 
@@ -92,7 +84,7 @@ function addButtons(div, obj, objContainer){
     div.appendChild(priorityLabel);
     div.appendChild(isDone);
     div.appendChild(remove);
-    remove.addEventListener('click', () => {div.remove(); deleteElement(obj, objContainer)})
+    remove.addEventListener('click', () => {div.remove(); lib.deleteToDo(obj)})
 }
 
 function makeCheckbox(obj, prop) {
@@ -207,19 +199,12 @@ function checklistAdder(){
 }
 
 function addNewElement(preset){
-    if(preset.type === 'project'){
-        const proj = new Project(preset.title, preset.priority);
-        console.log(`adding new project object to storage`);
-        console.log(proj);
-        toDoList.push(proj);
-    } else if (preset.type === 'task'){
-        const task = new ToDo(preset.title, preset.dueDate, preset.priority, false, preset.description, preset.checklist);
+        const task = new ToDo(preset.title, preset.project, preset.dueDate, preset.priority, false, preset.description, preset.checklist);
         console.log(`adding new todo object to storage:`);
         console.log(task);
-        toDoList.push(task);
-    }
-    const div = createElement(toDoList[toDoList.length-1], toDoList);
+        list.push(task);
+    const div = createElement(list[list.length-1], list);
     document.getElementById('content').appendChild(div);
     console.log('current storage:')
-    console.table(toDoList);
+    console.table(list);
 }

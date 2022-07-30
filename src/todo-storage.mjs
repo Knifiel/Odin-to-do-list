@@ -1,78 +1,58 @@
-import { parse, isValid, format } from 'date-fns';
+import { parse, isValid, format, eachDayOfInterval } from 'date-fns';
 
-export const toDoList = [];
-
-export class Project{
-    #title;
-    #priority;
-    #isDone;
-    #tasks;
-    constructor(title = 'Default', priority=false){
-        if (title === ''){
-            throw 'Title can not be empty';
+export class toDoList{
+#array;
+#projects;    
+constructor(array=[], projects=new Set()){
+    array.forEach(element => {
+        if(element instanceof ToDo !== true){
+            console.log('false')
+            throw 'array members can only be instances of ToDo';
         }
-        this.#title = title;
-        this.#priority = priority;
-        this.#isDone = false;
-        this.#tasks = [];
-    }
-
-    set title(str){
-        if (str === ''){
-        throw 'Title can not be empty';
-    }
-    this.#title=str;
-    }
-
-    set priority(bool){
-        if(!typeof bool === 'boolean'){
-            throw 'Priority must be boolean'
-        }       
-        this.#priority = bool;
-    }
-    set isDone(bool){
-        if(!typeof bool === 'boolean'){
-            throw 'isDone must be boolean'
-        } 
-        this.#isDone = bool;      
-    }
-    
-    get title(){
-        return this.#title;
-    }
-    get priority(){
-        return this.#priority;
-    }
-    get isDone(){
-        return this.#isDone;
-    }
-    
-    get tasks(){
-        return this.#tasks;
-    }
-    
-    add(obj, index){
-        if(index === undefined){
-            this.#tasks.push(obj);
-        }else {
-            this.#tasks.splice(index, 0, obj);
-        }
-    }
-
-    delete(obj){
-        this.#tasks.splice(this.#tasks.indexOf(obj), 1);
-    }
+    });
+    this.#array = _.sortBy(array, ['project', 'dueDate']);
+    this.#projects = projects;
 }
 
+/**
+     * @param {any[]} arr
+     */
+set array(arr){
+    this.#array = arr;
+}
+get array(){
+    return this.#array;
+}
+get projects(){
+    return this.#projects;
+}
+
+addProject(project){
+    this.#projects.add(project);
+}
+
+addTodo(todo){
+    if(index === undefined){
+        this.#array.push(todo);
+        this.#array = _.sortBy(this.#array, ['project', 'dueDate']);
+    } 
+}
+
+deleteTodo(todo){
+    this.#array.splice(this.#array.indexOf(todo), 1);
+}
+}
 export class ToDo{
     #title;
+    #project;
     #dueDate;
     #priority;
     #isDone;
     #description;
     #checklist;
 
-    constructor(title='New Task', dueDate=format(new Date(), 'yyyy-MM-dd'), priority=false, isDone=false, description = "", checklist = []){
+
+    constructor(title='New Task', project='', dueDate=format(new Date(), 'yyyy-MM-dd'), priority=false, isDone=false, description = "", checklist = []){
     
         if (title === ''){
             throw 'Title can not be empty';
@@ -94,6 +74,7 @@ export class ToDo{
         }
 
     this.#title=title;
+    this.#project='';
     this.#dueDate=dueDate;
     this.#priority=priority;
     this.#isDone=isDone;
@@ -109,6 +90,14 @@ export class ToDo{
     }
     this.#title=str;
     }
+
+    /**
+     * @param {string} str
+     */
+    set project(str){
+        this.#project = str;
+    }
+
     /**
      * @param {string} date
      */
@@ -158,6 +147,9 @@ export class ToDo{
     get title(){
         return this.#title;
     }
+    get project(){
+        return this.#project;
+    }
     get dueDate(){
         return this.#dueDate;
     }
@@ -172,22 +164,5 @@ export class ToDo{
     }
     get checklist(){
         return this.#checklist;
-    }
-}
-
-export function deleteElement(obj, objContainer){
-    if (objContainer instanceof Array) {
-        objContainer.splice(objContainer.indexOf(obj), 1);
-    } else {
-        objContainer.delete(obj);
-    }
-}
-
-export function moveElement(obj, from, to, index){
-    deleteElement(obj, from);
-    if(to instanceof Array){
-        to.splice(index, 1, obj);
-    } else {
-        to.add(obj, index)
     }
 }
