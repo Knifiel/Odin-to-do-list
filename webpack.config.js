@@ -1,6 +1,6 @@
-var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
-var webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const devMode = process.env.NODE_ENV !== "production";
 
 module.exports = {
   mode: 'development',
@@ -11,20 +11,21 @@ module.exports = {
     filename: 'index_bundle.js',
     clean: true
   },
+  plugins: [
+    new HtmlWebpackPlugin(),
+  ],
   module: {
-    rules: [{
-    use: 'babel-loader',
-      test: /\.js$/,
-      exclude: /node_modules/,
-      options: {
-        plugins: ['lodash'],
-        presets: [['env', { modules: false, targets: { node: 4 } }]]
-      }
-    }]
+    rules: [
+      {
+        test: /\.(sa|sc|c)ss$/i,
+        use: [
+          devMode ? "style-loader" : MiniCssExtractPlugin.loader,
+          "css-loader",
+          "postcss-loader",
+          "sass-loader",
+        ],
+      },
+    ],
   },
-  'plugins': [
-    new LodashModuleReplacementPlugin,
-    new webpack.optimize.UglifyJsPlugin,
-    new HtmlWebpackPlugin()
-  ]
+  plugins: [].concat(devMode ? [] : [new MiniCssExtractPlugin()]),
 }

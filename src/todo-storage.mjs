@@ -1,17 +1,18 @@
-import { parse, isValid, format, eachDayOfInterval } from 'date-fns';
-
+import { parse, isValid, format } from 'date-fns';
+import sortBy from './lodash/sortBy.js';
 export class toDoList{
 #array;
 #projects;    
-constructor(array=[], projects=new Set()){
+constructor(array=[], projects ){
     array.forEach(element => {
         if(element instanceof ToDo !== true){
             console.log('false')
             throw 'array members can only be instances of ToDo';
         }
     });
-    this.#array = _.sortBy(array, ['project', 'dueDate']);
-    this.#projects = projects;
+    const set = new Set();
+    this.#projects = projects || set; 
+    this.#array = sortBy(array, ['project', 'dueDate']);
 }
 
 /**
@@ -30,18 +31,26 @@ get projects(){
 addProject(project){
     this.#projects.add(project);
 }
+removeProject(project){
+    this.#projects.delete(project);
+}
+
+generateProjects(){
+    this.#array.forEach(todo => {
+        this.addProject(todo.project);
+    });
+}
 
 addTodo(todo){
-    if(index === undefined){
         this.#array.push(todo);
-        this.#array = _.sortBy(this.#array, ['project', 'dueDate']);
-    } 
+        this.#array = sortBy(this.#array, ['project', 'dueDate']);
 }
 
 deleteTodo(todo){
     this.#array.splice(this.#array.indexOf(todo), 1);
 }
 }
+
 export class ToDo{
     #title;
     #project;
@@ -52,13 +61,10 @@ export class ToDo{
     #checklist;
 
 
-    constructor(title='New Task', project='', dueDate=format(new Date(), 'yyyy-MM-dd'), priority=false, isDone=false, description = "", checklist = []){
+    constructor(title='New Task', project='none', dueDate=format(new Date(), 'yyyy-MM-dd'), priority=false, isDone=false, description = "", checklist = []){
     
         if (title === ''){
             throw 'Title can not be empty';
-        }
-        if(!isValid(parse(dueDate, 'yyyy-MM-dd', new Date()))){
-            throw 'Date format is invalid';
         }
         if(!typeof priority === 'boolean'){
             throw 'Priority must be boolean'
@@ -74,7 +80,7 @@ export class ToDo{
         }
 
     this.#title=title;
-    this.#project='';
+    this.#project=project;
     this.#dueDate=dueDate;
     this.#priority=priority;
     this.#isDone=isDone;
@@ -102,10 +108,7 @@ export class ToDo{
      * @param {string} date
      */
     set dueDate(date){
-    if(!isValid(parse(date, 'yyyy-MM-dd', new Date()))){
-        throw 'Date format is invalid';
-        }
-        this.#dueDate = parse(date, 'yyyy-MM-dd', new Date());
+        this.#dueDate = date;
     }
     /**
      * @param {boolean} priority

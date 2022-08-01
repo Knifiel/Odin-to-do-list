@@ -1,4 +1,7 @@
-import { promptNew } from "./elementCreation.mjs";
+import { promptNew, promptNewProject } from "./elementCreation.mjs";
+import { list } from "./index.js";
+
+
 export function makeMainMenu(){
     const app = document.createElement('div');
     app.id = 'app';
@@ -13,15 +16,22 @@ export function makeMainMenu(){
     createTask.classList.add('createButton');
     createTask.innerText = "Add new task";
     createTask.addEventListener('click', () => {
-        promptNew('task');
+        promptNew(list);
     });
 
     const createProject = document.createElement('button');
     createProject.classList.add('createButton');
     createProject.innerText = "Create new project";
     createProject.addEventListener('click', () => {
-        promptNew('project');
+        promptNewProject(list);
     });
+   
+    /* use only for debug
+    const CheckList = document.createElement('button');
+    CheckList.innerText = 'print list';
+    CheckList.addEventListener('click', () => console.log(list));
+    header.appendChild(CheckList);
+    */
 
     header.appendChild(createTask);
     header.appendChild(createProject);

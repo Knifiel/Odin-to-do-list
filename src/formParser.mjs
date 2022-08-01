@@ -1,7 +1,6 @@
 export function parseForm(form){
     const formData = new FormData(form);
-    const type = form.dataset.type;
-    let title, dueDate, priority, description, checklist;
+    let title, dueDate, project, priority, description, checklist;
     for (const pair of formData.entries()) {
         switch(pair[0]){
             case 'title':
@@ -9,6 +8,9 @@ export function parseForm(form){
                 break;
             case 'dueDate':
                 dueDate = pair[1];
+                break;
+            case 'project':
+                project = pair[1];
                 break;
             case 'priority':
                 priority = pair[1];
@@ -21,11 +23,7 @@ export function parseForm(form){
                 break;
         }
     }
-    if(type === 'project'){
-        return {type, title, priority};
-    } else{
-        return {type, title, dueDate, priority, description, checklist};
-    }
+        return {title, project, dueDate, priority, description, checklist};
     }
 
 function parseChecklist(text){
