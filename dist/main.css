@@ -1,0 +1,98 @@
+/*!*****************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/style.css ***!
+  \*****************************************************************/
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+#app{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 4em 1fr;
+
+    align-content: center;
+
+    background-color: whitesmoke;
+
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1em;
+    position: relative;
+
+    height: 100vh;
+}
+#header{
+    grid-column: span 2;
+    grid-row: 1;
+    padding: 0.5em;
+    background-color: cadetblue;
+}
+#sidebar{
+    grid-column: 1;
+    grid-row: 2;
+    padding: 0.5em;
+    background-color: blanchedalmond;
+}
+#content{
+    grid-column: 2;
+    grid-row: 2;
+
+    overflow: visible;
+    scroll-behavior: auto;
+    
+    display: flex;
+    flex-direction: column;
+    
+    justify-items: start;
+    
+    margin-left: 2em;
+}
+
+ul{
+    list-style-type: none;
+    width: fit-content;
+}
+
+#content .openTaskForm {
+    color: grey;
+    border: 2px solid rgba(128, 128, 128, 0.5);
+    border-radius: 1em;
+    display: flex;
+}
+
+#content .openTaskForm .sign{
+    border-radius: 50%;
+    text-align: center;
+    height: 1em;
+    width: 1em;
+    border: 2px solid rgba(128, 128, 128, 0.5);
+}
+
+#content .openTaskForm:hover, .sign:hover{
+    cursor: pointer;
+    background-color: aqua;
+    border-color: black;
+    color: black;
+}
+#content .openTaskForm.formOpen:hover{
+    cursor: default;
+    background-color: transparent;    
+    border: 2px solid rgba(128, 128, 128, 0.5);
+    color: black;
+}
+form{
+    color: black;
+    display: grid;
+    padding: 0.3em;
+    gap: 5px;
+
+    width: fit-content;
+
+    grid-template-columns: 1fr 4fr;
+    position: relative;
+}
+form button{
+    border-radius: 1em;
+    padding: 0.3em;
+    font-size: 1em;
+}

@@ -1,31 +1,25 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const devMode = process.env.NODE_ENV !== "production";
 
 module.exports = {
   mode: 'development',
   watch: true,
   entry: '/src/index.js',
   output: {
-    path: __dirname + '/dist',
+    path: path.resolve(__dirname, './dist'),
     filename: 'index_bundle.js',
-    clean: true
+    clean: true,
   },
-  plugins: [
-    new HtmlWebpackPlugin(),
-  ],
+  plugins: [new HtmlWebpackPlugin(),
+    new MiniCssExtractPlugin()],
   module: {
     rules: [
       {
-        test: /\.(sa|sc|c)ss$/i,
-        use: [
-          devMode ? "style-loader" : MiniCssExtractPlugin.loader,
-          "css-loader",
-          "postcss-loader",
-          "sass-loader",
-        ],
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
     ],
   },
-  plugins: [].concat(devMode ? [] : [new MiniCssExtractPlugin()]),
+
 }
