@@ -4,53 +4,46 @@ class Task{
     constructor(project, title, description, dueToDate, priority){
         this.project = project;
         this.title = title;
-        this.description = description || "";
+        this.description = description || "\n";
         this.dueToDate = dueToDate || format(new Date(), 'yyyy-MM-dd');
         this.priority = priority || false;
-        this.isCompleted = false;
+        this.oldProject = '';
 
     }
 }
 
 function taskList(){
-    const tempStorage = structuredClone(taskStorage);
-    return tempStorage;
+    return taskStorage;
 }
 
-function projectsList(){
-    const tempList = structuredClone(projectList);
-    return tempList;
+function projectList(){
+    return projectStorage;
 }
 
 function addProject(title){
-    const i = projectList.findIndex(project => project === title);
+    const i = projectStorage.findIndex(project => project === title);
     if(i === undefined){
         projectList.push(title);
     }
 }
 function removeProject(title){
-
-
+return;
 }
 
 function saveToStorage(){
     const saveTasks = JSON.stringify(taskStorage);
-    const saveProjects = JSON.stringify(projectList);
+    const saveProjects = JSON.stringify(projectStorage);
     localStorage.setItem('taskStorage', saveTasks);
     localStorage.setItem('projectList', saveProjects);
 }
 
-function NewTask(project, title, description, dueToDate, priority, isCompleted){
-    const task = new Task(project, title, description, dueToDate, priority, isCompleted);
+function NewTask(project, title, description, dueToDate, priority){
+    const task = new Task(project, title, description, dueToDate, priority);
     taskStorage.push(task);
 }
 
 function changeProperty(target, property, value){
-    if(target[property]!== value){ 
         target[property] = value;
-    } else {
-        console.warn(`object ${target} property ${property} is already ${value}.`);
-    }
 }
 
 export const storage = {
@@ -60,15 +53,15 @@ export const storage = {
     NewTask: (...args) => NewTask(...args),
     changeProp: (target, property, value) => changeProperty(target, property, value),
     taskList: () => taskList(),
-    projectList: () => projectsList(),
+    projectList: () => projectList(),
 }
        
     const defaultStorage = [];
-    const defaultTask = new Task('Hello!', 'Welcome to ToDo! You can add new task by clicking the line below.');
+    const defaultTask = new Task('Default', 'Hello! Click on me to expand.', 'Welcome to ToDo! You can add new task by clicking the line below.');
     defaultStorage.push(defaultTask);
-    const defaultProjects = ['Default'];
+    const defaultProjects = ['Default', 'Finished'];
     
     const localTasks = localStorage.getItem('taskStorage');
-    const taskStorage = (localTasks === null)?defaultStorage:JSON.parse(local);
+    const taskStorage = (localTasks === null)?defaultStorage:JSON.parse(localTasks);
     const localProjects = localStorage.getItem('projectList');
-    const projectList = (localProjects === null)?defaultProjects:JSON.parse(localProjects);
+    const projectStorage = (localProjects === null)?defaultProjects:JSON.parse(localProjects);

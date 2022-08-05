@@ -1,4 +1,4 @@
-import { parse } from "date-fns";
+import { format, parse } from "date-fns";
 
 const app = document.createElement('div');
 app.id = 'app';
@@ -16,7 +16,7 @@ content.id = 'content';
 const sidebar = document.createElement('div');
 sidebar.id = 'sidebar';
 const sidebarHeader = document.createElement('h2');
-sidebarHeader.innerText = "Projects";
+sidebarHeader.innerText = "Projects:";
 sidebar.appendChild(sidebarHeader);
 
 app.appendChild(header);
@@ -30,9 +30,7 @@ function liForAddTask(){
     const li = document.createElement('li');
     li.classList.add('openTaskForm');
 
-    const plusSign = document.createElement('div');
-    plusSign.textContent = "+";
-    plusSign.classList.add('sign');
+    const plusSign = makeSign('+');
     
     const span = document.createElement('span');
     span.textContent =  `Add new task`;
@@ -43,13 +41,27 @@ function liForAddTask(){
     return li;
 }
 
+function makeSign(signText){
+    const sign = document.createElement('div');
+    sign.textContent = signText;
+    sign.classList.add('sign');
+    sign.addEventListener('click', (e) => {
+        e.stopPropagation();
+    }, false);
+    return sign;
+}
+
 function formToCreateTask(){
     const form = document.createElement('form');
     form.action = 'javascript:void(0)';
+    form.id = 'form';
 
     const textTitle = document.createElement('input');
     textTitle.id = 'addTitle';
     textTitle.name = 'title';
+    textTitle.required = true;
+    textTitle.minLength = 1;
+
     const textTitleLabel = document.createElement('label');
     textTitleLabel.innerText = 'Title';
     textTitleLabel.setAttribute('for', 'addTitle');
@@ -67,7 +79,8 @@ function formToCreateTask(){
     const dueToDate = document.createElement('input');
     dueToDate.setAttribute('type', 'date');
     dueToDate.id = 'addDueDate';
-    dueToDate.name = 'DueToDate';
+    dueToDate.name = 'dueToDate';
+    dueToDate.value = format(new Date(), 'yyyy-MM-dd');
     const dueToDateLabel = document.createElement('label');
     dueToDateLabel.innerText = 'Due to:'
     dueToDateLabel.setAttribute('for', 'addDueDate');
@@ -82,7 +95,8 @@ function formToCreateTask(){
 
     const buttonAdd = document.createElement('button');
     buttonAdd.innerText = 'Add';
-    buttonAdd.id = 'formAdd'
+    buttonAdd.id = 'formAdd';
+    buttonAdd.type = 'submit';
     const buttonCancel = document.createElement('button');
     buttonCancel.innerText = 'Cancel';
     buttonCancel.id = 'formCancel';
@@ -99,8 +113,8 @@ function formToCreateTask(){
     form.appendChild(checkboxLabel);
     form.appendChild(checkbox);
 
-    form.appendChild(buttonAdd);
     form.appendChild(buttonCancel);
+    form.appendChild(buttonAdd);
 
     return form;
 }
@@ -110,14 +124,19 @@ function createListFromProp(arr, ...args){
         console.error(arr);
         throw 'passed argument is not an array';
     }
-    console.log(args);
+
     const ul = document.createElement('ul');
+    
+    
     arr.forEach((element, index) => {
         const li = document.createElement('li');
+        const sign = makeSign(' ');
         li.dataset.index = index;
+        li.appendChild(sign);
         args.forEach(arg => {
             const span = document.createElement('span');
             span.innerText = element[arg];
+            span.classList.add(arg);
             li.appendChild(span);
         });
         ul.appendChild(li);
@@ -125,37 +144,31 @@ function createListFromProp(arr, ...args){
     return ul;
 }
 
-function createTaskDiv(title, description, dueToDate, priority){
-    const div = document.createElement('div');
-    div.classList.add('taskOpen');
-
-    const titleText = document.createElement('h4');
-    titleText.innerText = title;
-
+function expandTaskDiv(div, description, priority){
     const descriptionText = document.createElement('p');
     descriptionText.innerText = description;
+    descriptionText.classList.add('description');
+    
+    const editButton = document.createElement('img');
+    editButton.classList.add('editButton');
+    editButton.textContent = 'Edit';
+    
+    const collapseButton = document.createElement('img');
+    collapseButton.classList.add('collapseButton');
+    collapseButton.textContent = 'Collapse';
 
-    const dueToDateText = document.createElement('p');
-    dueToDateText = parse(dueToDate, 'dd-MM-yyyy', new Date());
-
-    const checkbox = document.createElement('input');
-    checkbox.setAttribute('type', 'checkbox');
-    checkbox.checked = priority;
-    checkbox.disabled = true;
-
-    div.appendChild(titleText);
+    
+    div.classList.add('taskExpanded');
     div.appendChild(descriptionText);
-    div.appendChild(dueToDateText);
-    div.appendChild(checkbox);
-
-    return div;
+    div.appendChild(editButton);
+    div.appendChild(collapseButton);
 }
 
 export const ui = {
     liForAddTask: () => liForAddTask(),
     formToCreateTask: () => formToCreateTask(),
     createListFromProp: (array, ...prop) => createListFromProp(array, ...prop),
-    createTaskDiv: (title, description, dueToDate, priority) => createTaskDiv(title, description, dueToDate, priority),
+    expandTaskDiv: (div, description, priority) => expandTaskDiv(div, description, priority),
 
     header: header,
     sidebar: sidebar,

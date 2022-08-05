@@ -24,14 +24,20 @@
 #header{
     grid-column: span 2;
     grid-row: 1;
-    padding: 0.5em;
     background-color: cadetblue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 2px 3px 0px yellowgreen;
+    z-index: 1;
 }
 #sidebar{
     grid-column: 1;
     grid-row: 2;
     padding: 0.5em;
     background-color: blanchedalmond;
+    border-right: 4px ridge yellowgreen;
+    border-radius: 0px 10px 10px 0px;
 }
 #content{
     grid-column: 2;
@@ -48,9 +54,44 @@
     margin-left: 2em;
 }
 
-ul{
+#content ul{
+    padding-top: 1em;
+    max-width: 40%;
+}
+
+
+#content::before{
+    content: 'List of tasks:';
+    margin-top: 1em;
+    font-size: 2em;
+}
+
+#content ul>li{
     list-style-type: none;
-    width: fit-content;
+    min-width: 100%;
+
+    border: 2px solid rgba(128, 128, 128, 0.9);
+    background-color: azure;
+    border-radius: 1em;
+    padding-right: 1em;
+    margin-bottom: 0.3em;
+    box-shadow: 2px 2px 2px grey;
+
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    justify-content: flex-start;
+    align-self: center;
+
+    
+}
+
+#content ul>li[priorityTask]{
+    border-color: red;
+    box-shadow: inset 0px 0px 2px 2px red;
+}
+#content ul>li>.dueToDate::before{
+    content: "Due to: ";
 }
 
 #content .openTaskForm {
@@ -58,14 +99,47 @@ ul{
     border: 2px solid rgba(128, 128, 128, 0.5);
     border-radius: 1em;
     display: flex;
+    justify-content: flex-start;
 }
 
-#content .openTaskForm .sign{
+.sign{
     border-radius: 50%;
-    text-align: center;
-    height: 1em;
-    width: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 1.5em;
+    width: 1.5em;
+
     border: 2px solid rgba(128, 128, 128, 0.5);
+
+    cursor: pointer;
+}
+:not(.openTaskForm)>.sign{
+    content: url(ddce2e1e5ef60024f029.svg);
+    filter: brightness(0) saturate(100%) invert(71%) sepia(16%) saturate(0%) hue-rotate(154deg) brightness(80%) contrast(77%);
+}
+:not(.openTaskForm)>.sign:hover{
+    background-color: rgba(0, 128, 0, 0.5);
+    content: url(ddce2e1e5ef60024f029.svg);
+    filter: none;
+}
+.finished .sign{
+    content: url(0225cec6bda1f8dc092d.svg);
+}
+.finished .sign:hover{
+    background-color: rgba(0, 128, 0, 0.5);
+    content: url(0225cec6bda1f8dc092d.svg);
+}
+#content > ul > :hover{
+    cursor: pointer;
+    transform: scale(101%);
+    transition: 0.05s;
+}
+
+.sign:active{
+    transform: scale(1.1);
+    transition: 0.05s;
 }
 
 #content .openTaskForm:hover, .sign:hover{
@@ -74,12 +148,16 @@ ul{
     border-color: black;
     color: black;
 }
-#content .openTaskForm.formOpen:hover{
+
+#content .openTaskForm.formOpen{
+    justify-content: center;
     cursor: default;
     background-color: transparent;    
     border: 2px solid rgba(128, 128, 128, 0.5);
     color: black;
+    transition: 0.1s cubic-bezier(0.785, 0.135, 0.15, 0.86)
 }
+
 form{
     color: black;
     display: grid;
@@ -95,4 +173,98 @@ form button{
     border-radius: 1em;
     padding: 0.3em;
     font-size: 1em;
+}
+
+#content ul>li.taskExpanded{
+    display: grid;
+    width: fit-content;
+    grid-template-areas:
+    "title title title dueToDate"
+    "description description description description"
+    "edit collapse sign sign" ;
+    padding: 1.2em;
+    gap: 1.4em;
+    transition: 0.1s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+}
+#content ul>li.taskExpanded>:nth-child(n){
+    border: 1px dashed grey;
+}
+
+#content ul>li.taskExpanded>.title{
+    grid-area: title;
+    position: relative;
+}
+#content ul>li.taskExpanded>.title::before{
+    content: 'Title:';
+    bottom: 100%;
+    position: absolute;
+}
+
+#content ul>li.taskExpanded>.description{
+    grid-area: description;
+    position: relative;
+}
+#content ul>li.taskExpanded>.description::before{
+    content: 'Description:';
+    bottom: 100%;
+    position: absolute;
+}
+
+#content ul>li.taskExpanded>.dueToDate{
+    grid-area: dueToDate;
+    position: relative;
+}
+#content ul>li.taskExpanded>.dueToDate::before{
+    content: 'Due to:';
+    bottom: 100%;
+    position: absolute;
+}
+
+#content ul>li.taskExpanded>.editButton{
+    grid-area: edit;
+    content: url(5b77d777069c8253eb74.svg);
+    justify-self: end;
+    border: none;
+}
+#content ul>li.taskExpanded>.collapseButton{
+    grid-area: collapse;
+    content: url(1807cd803234f50f5ebb.svg);
+    justify-self: start;
+    border: none;
+}
+#content ul>li.taskExpanded>.sign{
+    grid-area: sign;
+    border: none;
+}
+#content ul>li.taskExpanded img{
+    width: 1.5em;
+    height: 1.5em;
+}
+
+
+
+
+#sidebar{
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    list-style-type: none;
+    font-size: 1.5em;
+}
+#sidebar li{
+    text-align: center;
+    margin: 0.2em 0;
+}
+
+#sidebar li.activeFilter{
+    font-weight: 600;
+    border-radius: 10px;
+    border-top: 2px groove black;
+    border-bottom: 2px groove black;
+    background: rgb(226,152,152);
+    background: linear-gradient(278deg, rgba(226,152,152,1) 0%, rgba(222,89,89,0.35898109243697474) 50%, rgba(226,152,152,1) 100%);
+}
+#sidebar li:hover:not(.activeFilter){
+    cursor: pointer;
+    text-decoration: underline;
 }
