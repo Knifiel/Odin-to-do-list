@@ -70,14 +70,13 @@
     border: 2px solid rgba(128, 128, 128, 0.9);
     background-color: azure;
     border-radius: 1em;
-    padding-right: 1em;
     margin-bottom: 0.3em;
     box-shadow: 2px 2px 2px grey;
 
     display: flex;
     align-items: center;
     gap: 1em;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-self: center;
 
     
@@ -99,32 +98,17 @@
     justify-content: flex-start;
 }
 
-.sign{
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 
-    height: 1.5em;
-    width: 1.5em;
-
-    border: 2px solid rgba(128, 128, 128, 0.5);
-
-    cursor: pointer;
-}
-:not(.openTaskForm)>.sign{
+:not(.openTaskForm)>.mark{
     content: url("./assets/check.svg");
-    filter: brightness(0) saturate(100%) invert(71%) sepia(16%) saturate(0%) hue-rotate(154deg) brightness(80%) contrast(77%);
 }
-:not(.openTaskForm)>.sign:hover{
-    background-color: rgba(0, 128, 0, 0.5);
-    content: url("./assets/check.svg");
-    filter: none;
+img:hover{
+    background-color: rgb(0, 255, 0);
 }
-.finished .sign{
+.finished .mark{
     content: url('./assets/arrow-u-left-bottom.svg');
 }
-.finished .sign:hover{
+.finished .mark:hover{
     background-color: rgba(0, 128, 0, 0.5);
     content: url('./assets/arrow-u-left-bottom.svg');
 }
@@ -134,16 +118,14 @@
     transition: 0.05s;
 }
 
-.sign:active{
-    transform: scale(1.1);
-    transition: 0.05s;
-}
-
-#content .openTaskForm:hover, .sign:hover{
+#content .openTaskForm:hover, img:hover{
     cursor: pointer;
     background-color: aqua;
     border-color: black;
     color: black;
+}
+#content .openTaskForm img{
+    content: url("./assets/plus.svg");
 }
 
 #content .openTaskForm.formOpen{
@@ -178,12 +160,12 @@ form button{
     grid-template-areas:
     "title title title dueToDate"
     "description description description description"
-    "edit collapse sign sign" ;
+    "edit collapse mark delete" ;
     padding: 1.2em;
     gap: 1.4em;
     transition: 0.1s cubic-bezier(0.785, 0.135, 0.15, 0.86);
 }
-#content ul>li.taskExpanded>:nth-child(n){
+#content ul>li.taskExpanded>:nth-child(n):not(img){
     border: 1px dashed grey;
 }
 
@@ -217,27 +199,34 @@ form button{
     position: absolute;
 }
 
-#content ul>li.taskExpanded>.editButton{
+img.editButton{
     grid-area: edit;
     content: url('./assets/lead-pencil.svg');
     justify-self: end;
     border: none;
 }
-#content ul>li.taskExpanded>.collapseButton{
+img.collapseButton{
     grid-area: collapse;
     content: url('./assets/arrow-collapse-up.svg');
     justify-self: start;
     border: none;
 }
-#content ul>li.taskExpanded>.sign{
-    grid-area: sign;
+img.mark{
+    grid-area: mark;
     border: none;
 }
-#content ul>li.taskExpanded img{
-    width: 1.5em;
-    height: 1.5em;
+img.delete{
+    grid-area: delete;
+    content: url('./assets/delete-forever.svg');
+    border: none;
 }
 
+#content ul>li img{
+    width: 1.5em;
+    height: 1.5em;
+    border: 2px solid grey;
+    border-radius: 50%;
+}
 
 
 

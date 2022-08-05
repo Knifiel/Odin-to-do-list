@@ -42,6 +42,10 @@ function NewTask(project, title, description, dueToDate, priority){
     taskStorage.push(task);
 }
 
+function deleteTask(task){
+    console.log(taskStorage.splice(taskStorage.indexOf(task), 1));
+}
+
 function changeProperty(target, property, value){
         target[property] = value;
 }
@@ -50,6 +54,7 @@ export const storage = {
     save: () => saveToStorage(),
     addProject: (title) => addProject(title),
     removeProject: (title) => removeProject(title),
+    deleteTask: (task) => deleteTask(task),
     NewTask: (...args) => NewTask(...args),
     changeProp: (target, property, value) => changeProperty(target, property, value),
     taskList: () => taskList(),

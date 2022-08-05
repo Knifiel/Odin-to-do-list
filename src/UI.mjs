@@ -1,4 +1,4 @@
-import { format, parse } from "date-fns";
+import { differenceInBusinessDays, format } from "date-fns";
 
 const app = document.createElement('div');
 app.id = 'app';
@@ -26,11 +26,13 @@ app.appendChild(content);
 
 document.body.appendChild(app);
 
+
+
 function liForAddTask(){
     const li = document.createElement('li');
     li.classList.add('openTaskForm');
 
-    const plusSign = makeSign('+');
+    const plusSign = makeImg('Add');
     
     const span = document.createElement('span');
     span.textContent =  `Add new task`;
@@ -41,10 +43,9 @@ function liForAddTask(){
     return li;
 }
 
-function makeSign(signText){
-    const sign = document.createElement('div');
-    sign.textContent = signText;
-    sign.classList.add('sign');
+function makeImg(altText){
+    const sign = document.createElement('img');
+    sign.alt = altText;
     sign.addEventListener('click', (e) => {
         e.stopPropagation();
     }, false);
@@ -94,7 +95,7 @@ function formToCreateTask(){
     checkboxLabel.setAttribute('for', 'addPriority');
 
     const buttonAdd = document.createElement('button');
-    buttonAdd.innerText = 'Add';
+    buttonAdd.innerText = 'Confirm';
     buttonAdd.id = 'formAdd';
     buttonAdd.type = 'submit';
     const buttonCancel = document.createElement('button');
@@ -116,22 +117,30 @@ function formToCreateTask(){
     form.appendChild(buttonCancel);
     form.appendChild(buttonAdd);
 
+    form.childNodes.forEach(node => node.addEventListener('click', (e) => e.stopPropagation()));
+
     return form;
 }
 
 function createListFromProp(arr, ...args){
     if(arr instanceof Array === false){
-        console.error(arr);
         throw 'passed argument is not an array';
     }
 
     const ul = document.createElement('ul');
     
-    
     arr.forEach((element, index) => {
-        const li = document.createElement('li');
-        const sign = makeSign(' ');
+        const li = makeLiFromProps(element, ...args);
         li.dataset.index = index;
+        ul.appendChild(li);
+    });
+    return ul;
+}
+
+function makeLiFromProps(element, ...args){
+    const li = document.createElement('li');
+        const sign = makeImg('done/not done');
+        sign.classList.add('mark');
         li.appendChild(sign);
         args.forEach(arg => {
             const span = document.createElement('span');
@@ -139,23 +148,22 @@ function createListFromProp(arr, ...args){
             span.classList.add(arg);
             li.appendChild(span);
         });
-        ul.appendChild(li);
-    });
-    return ul;
+        const deleteBtn = makeImg('delete');
+        deleteBtn.classList.add('delete');
+        li.appendChild(deleteBtn);
+    return li;
 }
 
-function expandTaskDiv(div, description, priority){
+function expandTaskDiv(div, description){
     const descriptionText = document.createElement('p');
     descriptionText.innerText = description;
     descriptionText.classList.add('description');
     
-    const editButton = document.createElement('img');
+    const editButton = makeImg('Edit');
     editButton.classList.add('editButton');
-    editButton.textContent = 'Edit';
     
-    const collapseButton = document.createElement('img');
+    const collapseButton = makeImg('Collapse');
     collapseButton.classList.add('collapseButton');
-    collapseButton.textContent = 'Collapse';
 
     
     div.classList.add('taskExpanded');
@@ -164,11 +172,38 @@ function expandTaskDiv(div, description, priority){
     div.appendChild(collapseButton);
 }
 
+function collapseTaskDiv(div){
+    const elementsToRemove = div.querySelectorAll('.description, .editButton, .collapseButton');
+    elementsToRemove.forEach(element => {element.remove()});
+    div.classList.remove('taskExpanded');
+}
+
+async function editDiv(div){
+    div.classList.remove('taskExpanded');
+    div.classList.add('editActive');
+    const title = div.querySelector('.title').textContent;
+    const description = div.querySelector('.description').textContent;
+    const dueToDate = div.querySelector('.dueToDate').textContent;
+    const isPrioritized = div.hasAttribute('prioritytask');
+    while (div.firstChild) {
+        div.removeChild(div.firstChild);
+    }
+    const form = formToCreateTask();
+    form.querySelector('#addTitle').value = title;
+    form.querySelector('#addDescription').value = description;
+    form.querySelector('#addDueDate').value = dueToDate;
+    form.querySelector('#addPriority').checked = isPrioritized;
+    div.appendChild(form);
+}
+
 export const ui = {
     liForAddTask: () => liForAddTask(),
     formToCreateTask: () => formToCreateTask(),
     createListFromProp: (array, ...prop) => createListFromProp(array, ...prop),
-    expandTaskDiv: (div, description, priority) => expandTaskDiv(div, description, priority),
+    expandTaskDiv: (div, description) => expandTaskDiv(div, description),
+    collapseTaskDiv: (div) => collapseTaskDiv(div),
+    makeLiFromProps: (todo, ...props) => makeLiFromProps(todo, ...props),
+    editDiv: (div) => editDiv(div),
 
     header: header,
     sidebar: sidebar,

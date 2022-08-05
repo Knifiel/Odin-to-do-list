@@ -7,7 +7,10 @@ export function makeSidebar(){
         div = document.createElement('div');
         div.id = 'sidebarProjectList';
     } else {
-        div.innerHTML = '';
+        while (div.firstChild) {
+            div.removeChild(div.firstChild);
+          }
+          
     }
     const ul = document.createElement('ul');
     storage.projectList().forEach((project, index) => {
@@ -36,7 +39,9 @@ export function makeSidebar(){
 }
 
 export function renderTasks(project){
-    ui.content.innerHTML = '';
+    while (ui.content.firstChild) {
+        ui.content.removeChild(ui.content.firstChild);
+      }
     const filteredTasks = storage.taskList().filter(element => element.project === project);
     let ul;
     if(filteredTasks !==null){
@@ -58,10 +63,48 @@ export function renderTasks(project){
         if (task.priority === true){
             ul.childNodes[index].toggleAttribute('priorityTask', true);
         }
+        ul.childNodes[index].lastChild.addEventListener('click', (e) => {
+            if(confirm('Delete this task?')){
+                storage.deleteTask(task);
+                e.target.parentNode.remove();
+            }
+        });
+
         ul.childNodes[index].addEventListener('click', (e) => {
-            if(ul.childNodes[index].classList.contains('taskExpanded') === false){
+            if((ul.childNodes[index].classList.contains('taskExpanded') === false)&&(ul.childNodes[index].classList.contains('editActive') === false)){
             e.preventDefault();
+            e.stopPropagation();
             ui.expandTaskDiv(ul.childNodes[index], task.description, task.priority);
+            ul.childNodes[index].querySelector('.collapseButton').addEventListener('click', (e) => ui.collapseTaskDiv(ul.childNodes[index]));
+            ul.childNodes[index].querySelector('.editButton').addEventListener('click', (e) =>  {
+                e.stopPropagation();
+                ui.editDiv(ul.childNodes[index]);
+                ul.childNodes[index].querySelector('#formCancel').addEventListener('click', (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                renderTasks(project);
+            });
+              ul.childNodes[index].querySelector('#formAdd').addEventListener('click', () =>{
+                e.stopPropagation();
+                e.preventDefault();
+                console.log(task);
+                const form = ul.childNodes[index].querySelector('form');
+                if(form.checkValidity() === true){
+                    const formData = new FormData(form);
+                    const title = formData.get('title');
+                    const description = formData.get('description');
+                    const dueToDate = formData.get('dueToDate');
+                    const priority = formData.get('priority')?true:false;
+                    for (const pair of formData.entries()) {
+                        storage.changeProp(task, pair[0], pair[1]);
+                      };
+                    renderTasks(project);
+                } else {
+                    form.reportValidity();
+                }
+            });
+            } 
+            );
             }
         });
     });
@@ -75,26 +118,21 @@ export function renderTasks(project){
 }
 
 function addTaskLiWithListeners(ul){
-    let index;
-    if(ul.lastChild === null){
-        index = 0;
-    } else {
-    index = Number(ul.lastChild.dataset.index) + 1;
-    }
-    const addLi = ui.liForAddTask();
-    addLi.dataset.index = index;
-    addLi.addEventListener('click', (e) => {
-        openAddForm(e, addLi);
+    const li = ui.liForAddTask();
+    li.addEventListener('click', (e) => {
+        openAddForm(e, li);
     }, {once : true});
-    addLi.firstChild.addEventListener('click', (e) =>{
-        openAddForm(e, addLi);
+    li.firstChild.addEventListener('click', (e) =>{
+        openAddForm(e, li);
     }, {once : true});
-    ul.appendChild(addLi);
+    ul.appendChild(li);
 }
 
 function openAddForm(e, li){
     e.preventDefault();
-        li.innerHTML = '';
+        while (li.firstChild) {
+            li.removeChild(li.firstChild);
+        }
         const form = ui.formToCreateTask();
         li.appendChild(form);
         li.classList.add('formOpen');
@@ -108,6 +146,7 @@ function openAddForm(e, li){
     });
     addButton.addEventListener('click', (e) =>{
         e.preventDefault();
+        e.stopPropagation();
         const form = document.getElementById('form');
         if(form.checkValidity() === true){
             const formData = new FormData(form);
