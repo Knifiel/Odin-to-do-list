@@ -28,7 +28,7 @@ function addProject(title){
 }
 
 function removeProject(project){
-    if((project === "Default")||(project === 'Finished')){
+    if((project === "Unfinished")||(project === 'Finished')){
         return;
     }
     taskStorage.forEach((task) => {
@@ -61,7 +61,7 @@ function changeProperty(target, property, value){
                 value = "\n";
                 break;
             case((property === 'project')&&(projectStorage.indexOf(value)===-1)):
-                value = "Default";
+                value = "Unfinished";
                 break;
             case((property === 'priority')&&(value === 'true')):
                 value = true;
@@ -97,9 +97,9 @@ export const storage = {
 }
        
     const defaultStorage = [];
-    const defaultTask = new Task('Default', 'Hello! Click on me to expand.', 'Welcome to ToDo! You can add new task by clicking the line marked "Add new task". At the bottom of expanded card, you can find buttons to move task to finished tasks, delete them, edit them and move them to another project. ');
+    const defaultTask = new Task('Unfinished', 'Hello! Click on me to expand.', 'Welcome to ToDo! You can add new task by clicking the line marked "Add new task". At the bottom of expanded card, you can find buttons to move task to finished tasks, delete them, edit them and move them to another project. ');
     defaultStorage.push(defaultTask);
-    const defaultProjects = ['Default', 'Finished'];
+    const defaultProjects = ['Unfinished', 'Finished'];
     
     const localProjects = localStorage.getItem('projectList');
     const projectStorage = (localProjects === null)?defaultProjects:JSON.parse(localProjects);

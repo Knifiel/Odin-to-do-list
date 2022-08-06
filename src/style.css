@@ -5,9 +5,7 @@
     font-size: 1em;
     position: relative;
 }
-
-#app{
-    align-content: center;
+body{
     background-color: whitesmoke;
 }
 
@@ -127,10 +125,11 @@
     content: ' ';
     z-index: -1;
     position: absolute;
-    left: -20%;
+    left: -200%;
     background-color: whitesmoke;
     height: 100%;
-    width: 60vW;
+    width: 200vW;
+    overflow: visible;
 }
 
 .clearTasks{

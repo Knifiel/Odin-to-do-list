@@ -35,7 +35,7 @@ export function makeSidebar(activeProject){
             ul.childNodes.forEach(node => node.classList.remove('activeFilter'));
             li.classList.add('activeFilter');
         });
-        if((project !== "Default")&&(project !== "Finished")){
+        if((project !== 'Unfinished')&&(project !== "Finished")){
         const editBtn = ui.makeImg('edit');
         editBtn.classList.add('editButton');
         editBtn.addEventListener('click', (e) =>{
@@ -66,7 +66,7 @@ export function makeSidebar(activeProject){
              storage.removeProject(project);
              e.target.parentNode.remove();
              if(e.target.parentNode.classList.contains('activeFilter')){
-                makeSidebar('Default');
+                makeSidebar('Unfinished');
              }
          });
          deleteBtn.classList.add('delete');
@@ -103,8 +103,12 @@ export function renderTasks(project){
     const head = document.createElement('h3');
     ui.content.appendChild(head);
     
-    
-    const filteredTasks = storage.taskList().filter(element => element.project === project);
+    let filteredTasks;
+    if(project === 'Unfinished'){
+        filteredTasks = storage.taskList().filter(element => element.project != 'Finished');
+    } else {
+    filteredTasks = storage.taskList().filter(element => element.project === project);
+    }
     let ul;
     if(filteredTasks !==null){
         ul = ui.createListFromProp(filteredTasks, 'title', 'dueToDate');
