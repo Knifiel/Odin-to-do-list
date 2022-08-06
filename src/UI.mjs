@@ -44,12 +44,12 @@ function liForAddTask(){
 }
 
 function makeImg(altText){
-    const sign = document.createElement('img');
-    sign.alt = altText;
-    sign.addEventListener('click', (e) => {
+    const img = document.createElement('img');
+    img.alt = altText;
+    img.addEventListener('click', (e) => {
         e.stopPropagation();
     }, false);
-    return sign;
+    return img;
 }
 
 function formToCreateTask(){
@@ -151,29 +151,34 @@ function makeLiFromProps(element, ...args){
         const deleteBtn = makeImg('delete');
         deleteBtn.classList.add('delete');
         li.appendChild(deleteBtn);
+        li.childNodes.forEach(node => node.addEventListener('click', (e) => {
+            if(li.classList.contains('taskExpanded')){
+                e.stopPropagation();
+            }
+        }));
     return li;
 }
 
 function expandTaskDiv(div, description){
     const descriptionText = document.createElement('p');
     descriptionText.innerText = description;
+    descriptionText.addEventListener('click', (e) => {e.stopPropagation()})
     descriptionText.classList.add('description');
     
     const editButton = makeImg('Edit');
     editButton.classList.add('editButton');
     
-    const collapseButton = makeImg('Collapse');
-    collapseButton.classList.add('collapseButton');
+    const changeProject = makeImg('changeProject');
+    changeProject.classList.add('changeProject');
 
-    
     div.classList.add('taskExpanded');
     div.appendChild(descriptionText);
     div.appendChild(editButton);
-    div.appendChild(collapseButton);
+    div.appendChild(changeProject);
 }
 
 function collapseTaskDiv(div){
-    const elementsToRemove = div.querySelectorAll('.description, .editButton, .collapseButton');
+    const elementsToRemove = div.querySelectorAll('.description, .editButton, .changeProject');
     elementsToRemove.forEach(element => {element.remove()});
     div.classList.remove('taskExpanded');
 }
@@ -204,6 +209,8 @@ export const ui = {
     collapseTaskDiv: (div) => collapseTaskDiv(div),
     makeLiFromProps: (todo, ...props) => makeLiFromProps(todo, ...props),
     editDiv: (div) => editDiv(div),
+    makeImg: (text) => makeImg(text),
+    disableAllButTarget: (target) => disableAllButTarget(target),
 
     header: header,
     sidebar: sidebar,

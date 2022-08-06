@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, isPast } from "date-fns";
 
 class Task{
     constructor(project, title, description, dueToDate, priority){
@@ -22,12 +22,21 @@ function projectList(){
 
 function addProject(title){
     const i = projectStorage.findIndex(project => project === title);
-    if(i === undefined){
-        projectList.push(title);
+    if(i === -1){
+        projectStorage.push(title);
     }
 }
-function removeProject(title){
-return;
+
+function removeProject(project){
+    if((project === "Default")||(project === 'Finished')){
+        return;
+    }
+    taskStorage.forEach((task) => {
+        if(task.project === project){
+            deleteTask(task);
+        }
+    });
+    projectStorage.splice(projectStorage.indexOf(project));
 }
 
 function saveToStorage(){
@@ -43,12 +52,37 @@ function NewTask(project, title, description, dueToDate, priority){
 }
 
 function deleteTask(task){
-    console.log(taskStorage.splice(taskStorage.indexOf(task), 1));
+    taskStorage.splice(taskStorage.indexOf(task), 1);
 }
 
 function changeProperty(target, property, value){
+        switch(true){
+            case ((property === 'description')&&((value === "")||(value === undefined))):
+                value = "\n";
+                break;
+            case((property === 'project')&&(projectStorage.indexOf(value)===-1)):
+                value = "Default";
+                break;
+            case((property === 'priority')&&(value === 'true')):
+                value = true;
+                break;
+            case((property === 'priority')&&(value === 'false')):
+                value = false;
+                break;
+        }
         target[property] = value;
 }
+
+function changeProjectName(project, newName){
+    const i = projectStorage.findIndex(project => project === newName);
+    if(i === -1){
+    taskStorage.forEach(task => {
+        if(task.project === project){
+            changeProperty(task, 'project', newName);
+        }
+    projectStorage.splice(projectStorage.indexOf(project), 1, newName);
+    });
+}}
 
 export const storage = {
     save: () => saveToStorage(),
@@ -59,14 +93,16 @@ export const storage = {
     changeProp: (target, property, value) => changeProperty(target, property, value),
     taskList: () => taskList(),
     projectList: () => projectList(),
+    changeProjectName: (project, newName) => changeProjectName(project, newName),
 }
        
     const defaultStorage = [];
-    const defaultTask = new Task('Default', 'Hello! Click on me to expand.', 'Welcome to ToDo! You can add new task by clicking the line below.');
+    const defaultTask = new Task('Default', 'Hello! Click on me to expand.', 'Welcome to ToDo! You can add new task by clicking the line marked "Add new task". At the bottom of expanded card, you can find buttons to move task to finished tasks, delete them, edit them and move them to another project. ');
     defaultStorage.push(defaultTask);
     const defaultProjects = ['Default', 'Finished'];
     
-    const localTasks = localStorage.getItem('taskStorage');
-    const taskStorage = (localTasks === null)?defaultStorage:JSON.parse(localTasks);
     const localProjects = localStorage.getItem('projectList');
     const projectStorage = (localProjects === null)?defaultProjects:JSON.parse(localProjects);
+    
+    const localTasks = localStorage.getItem('taskStorage');
+    const taskStorage = (localTasks === null)?defaultStorage:JSON.parse(localTasks);

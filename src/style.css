@@ -1,66 +1,154 @@
 * {
     padding: 0px;
     margin: 0px;
-}
-
-#app{
-    display: grid;
-    grid-template-columns: 1fr 4fr;
-    grid-template-rows: 4em 1fr;
-
-    align-content: center;
-
-    background-color: whitesmoke;
-
     font-family: 'Times New Roman', Times, serif;
     font-size: 1em;
     position: relative;
-
-    height: 100vh;
 }
+
+#app{
+    align-content: center;
+    background-color: whitesmoke;
+}
+
 #header{
-    grid-column: span 2;
-    grid-row: 1;
+    position: relative;
+    width: 100vw;
+    height: 7vh;
     background-color: cadetblue;
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0px 2px 3px 0px yellowgreen;
-    z-index: 1;
+    z-index: 11;
+
+    font-size: 3em;
 }
+
 #sidebar{
-    grid-column: 1;
-    grid-row: 2;
+    z-index: 10;
+    top: 7vh;
+    height: 100vh;
+    width: min(15vW, 200px);
+    position: fixed;
     padding: 0.5em;
     background-color: blanchedalmond;
     border-right: 4px ridge yellowgreen;
     border-radius: 0px 10px 10px 0px;
 }
+
+#sidebar img{
+    width: 1em;
+    height: 1em;
+    max-width: 1em;
+    max-height: 1em;
+    border: 2px solid grey;
+    border-radius: 50%;
+}
+
+#sidebar ul{
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    list-style-type: none;
+    font-size: 1.5em;
+    
+}
+
+#sidebar li{
+    display: flex;
+    margin: 0.2em;
+    border: 1px solid grey;
+    border-radius: 10px;
+    justify-content: space-around;
+    align-items: center;
+}
+#sidebar ul>li:hover:not(.activeFilter){
+    cursor: pointer;
+    box-shadow: 2px 2px black;
+    font-weight: 900;
+}
+#sidebar ul>li:last-child{
+    background-color: rgba(255, 255, 0, 0.226);
+    border: 2px groove grey;
+    margin-top: 3em;
+}
+#sidebar ul>li:last-child:hover{
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#sidebar ul>li button{
+    border: none;
+    background: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+#sidebar ul>li button:hover{
+    border: none;
+    background: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 900;
+}
+#sidebar li.activeFilter{
+    font-weight: 600;
+    border-radius: 10px;
+    border-top: 2px groove black;
+    border-bottom: 2px groove black;
+    background: rgb(226,152,152);
+    background: linear-gradient(278deg, rgba(226,152,152,1) 0%, rgba(222,89,89,0.35898109243697474) 50%, rgba(226,152,152,1) 100%);
+}
+
+
 #content{
     grid-column: 2;
     grid-row: 2;
-
+    
     overflow: visible;
-    scroll-behavior: auto;
     
     display: flex;
     flex-direction: column;
     
+    align-items: center;
     justify-items: start;
     
-    margin-left: 2em;
+}
+
+#content>h3{
+    position: sticky;
+    z-index: 9;
+    top: 0vh;
+    margin: 1em 2em;
+    font-size: 2em;
+}
+
+#content>h3::before{
+    content: ' ';
+    z-index: -1;
+    position: absolute;
+    left: -20%;
+    background-color: whitesmoke;
+    height: 100%;
+    width: 60vW;
+}
+
+.clearTasks{
+    border-radius: 10px;
+    border: 2px ridge black;
+    background-color: aquamarine;
+    margin-left: 1em;
+    padding: 0em 0.5em;
+}
+
+.clearTasks:hover{
+    cursor: pointer;
+    box-shadow: 2px 2px 2px black;
 }
 
 #content ul{
     padding-top: 1em;
-    max-width: 40%;
-}
-
-
-#content::before{
-    content: 'List of tasks:';
-    margin-top: 1em;
-    font-size: 2em;
+    width: min(50vw, 100%);
 }
 
 #content ul>li{
@@ -77,9 +165,7 @@
     align-items: center;
     gap: 1em;
     justify-content: space-between;
-    align-self: center;
-
-    
+    align-self: center;   
 }
 
 #content ul>li[priorityTask]{
@@ -112,9 +198,9 @@ img:hover{
     background-color: rgba(0, 128, 0, 0.5);
     content: url('./assets/arrow-u-left-bottom.svg');
 }
-#content > ul > :hover{
+#content > ul > li:hover{
     cursor: pointer;
-    transform: scale(101%);
+    transform: scale(105%);
     transition: 0.05s;
 }
 
@@ -129,15 +215,18 @@ img:hover{
 }
 
 #content .openTaskForm.formOpen{
+    
+
     justify-content: center;
     cursor: default;
-    background-color: transparent;    
+    background-color: whitesmoke;    
     border: 2px solid rgba(128, 128, 128, 0.5);
     color: black;
     transition: 0.1s cubic-bezier(0.785, 0.135, 0.15, 0.86)
 }
 
 form{
+
     color: black;
     display: grid;
     padding: 0.3em;
@@ -154,19 +243,39 @@ form button{
     font-size: 1em;
 }
 
+form#projOptions{
+    z-index: 1;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    background-color: antiquewhite;
+    border: 2px ridge black;
+    border-radius: 10px;
+    bottom: 0%;
+    left: 100%;
+    pointer-events: none;
+}
+form#projOptions>:nth-child(n){
+    pointer-events:all;
+}
+
+
 #content ul>li.taskExpanded{
     display: grid;
-    width: fit-content;
+    width: max(fit-content, 100%);
     grid-template-areas:
     "title title title dueToDate"
     "description description description description"
-    "edit collapse mark delete" ;
-    padding: 1.2em;
+    "mark delete edit changeProject" ;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 2em;
     gap: 1.4em;
     transition: 0.1s cubic-bezier(0.785, 0.135, 0.15, 0.86);
 }
 #content ul>li.taskExpanded>:nth-child(n):not(img){
-    border: 1px dashed grey;
+    border: 1px solid grey;
+    border-radius: 0 10px 10px 0px;
+    padding: 0.1em;
 }
 
 #content ul>li.taskExpanded>.title{
@@ -192,23 +301,51 @@ form button{
 #content ul>li.taskExpanded>.dueToDate{
     grid-area: dueToDate;
     position: relative;
+    padding-left: 1em;
 }
+.dueToDate{
+    border: none;
+    width: max-content;
+    border-radius: 20px 0px;
+    padding-right: 4em;
+}
+
 #content ul>li.taskExpanded>.dueToDate::before{
     content: 'Due to:';
     bottom: 100%;
+    left: -10%;
     position: absolute;
+}
+.dueToDate::after{
+    position: absolute;
+    left: 80%;
+    width: max-content;
+}
+
+.isToday>.dueToDate::after{
+    content: "Today";
+}
+.isTomorrow>.dueToDate::after{
+    content: "Tomorrow";
+}
+.isWithinWeek>.dueToDate::after{
+    content: "Within a week"
+}
+.isQuiteAway>.dueToDate::after{
+    content: "Within a month"
+}
+.isLate>.dueToDate::after{
+    content: "Missed deadline"
+}
+
+#content ul>li.taskExpanded>.dueToDate::after{
+bottom: 100%;
+left: 50%;
 }
 
 img.editButton{
     grid-area: edit;
     content: url('./assets/lead-pencil.svg');
-    justify-self: end;
-    border: none;
-}
-img.collapseButton{
-    grid-area: collapse;
-    content: url('./assets/arrow-collapse-up.svg');
-    justify-self: start;
     border: none;
 }
 img.mark{
@@ -220,37 +357,20 @@ img.delete{
     content: url('./assets/delete-forever.svg');
     border: none;
 }
+img.changeProject{
+    grid-area: changeProject;
+    content: url('./assets/folder-move-outline.svg');
+    border: none;
+    position: relative;
+}
 
-#content ul>li img{
+#content img{
     width: 1.5em;
     height: 1.5em;
+    max-width: 1.5em;
+    max-height: 1.5em;
     border: 2px solid grey;
     border-radius: 50%;
+    justify-self: center;
 }
 
-
-
-#sidebar{
-    display: flex;
-    flex-direction: column;
-    list-style: none;
-    list-style-type: none;
-    font-size: 1.5em;
-}
-#sidebar li{
-    text-align: center;
-    margin: 0.2em 0;
-}
-
-#sidebar li.activeFilter{
-    font-weight: 600;
-    border-radius: 10px;
-    border-top: 2px groove black;
-    border-bottom: 2px groove black;
-    background: rgb(226,152,152);
-    background: linear-gradient(278deg, rgba(226,152,152,1) 0%, rgba(222,89,89,0.35898109243697474) 50%, rgba(226,152,152,1) 100%);
-}
-#sidebar li:hover:not(.activeFilter){
-    cursor: pointer;
-    text-decoration: underline;
-}
