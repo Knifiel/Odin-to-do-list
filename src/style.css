@@ -1,375 +1,372 @@
 * {
-    padding: 0px;
-    margin: 0px;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 1em;
-    position: relative;
+  padding: 0px;
+  margin: 0px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1em;
+  position: relative;
 }
-body{
-    background-color: whitesmoke;
-}
-
-#header{
-    position: relative;
-    width: 100vw;
-    height: 7vh;
-    background-color: cadetblue;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0px 2px 3px 0px yellowgreen;
-    z-index: 11;
-
-    font-size: 3em;
+body {
+  background-color: whitesmoke;
 }
 
-#sidebar{
-    z-index: 10;
-    top: 7vh;
-    height: 100vh;
-    width: min(15vW, 200px);
-    position: fixed;
-    padding: 0.5em;
-    background-color: blanchedalmond;
-    border-right: 4px ridge yellowgreen;
-    border-radius: 0px 10px 10px 0px;
+#header {
+  position: relative;
+  width: 100vw;
+  height: 7vh;
+  background-color: cadetblue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 2px 3px 0px yellowgreen;
+  z-index: 11;
+
+  font-size: 3em;
 }
 
-#sidebar img{
-    width: 1em;
-    height: 1em;
-    max-width: 1em;
-    max-height: 1em;
-    border: 2px solid grey;
-    border-radius: 50%;
+#sidebar {
+  z-index: 10;
+  top: 7vh;
+  height: 100vh;
+  width: min(15vw, 200px);
+  position: fixed;
+  padding: 0.5em;
+  background-color: blanchedalmond;
+  border-right: 4px ridge yellowgreen;
+  border-radius: 0px 10px 10px 0px;
 }
 
-#sidebar ul{
-    display: flex;
-    flex-direction: column;
-    list-style: none;
-    list-style-type: none;
-    font-size: 1.5em;
-    
+#sidebar img {
+  width: 1em;
+  height: 1em;
+  max-width: 1em;
+  max-height: 1em;
+  border: 2px solid grey;
+  border-radius: 50%;
 }
 
-#sidebar li{
-    display: flex;
-    margin: 0.2em;
-    border: 1px solid grey;
-    border-radius: 10px;
-    justify-content: space-around;
-    align-items: center;
-}
-#sidebar ul>li:hover:not(.activeFilter){
-    cursor: pointer;
-    box-shadow: 2px 2px black;
-    font-weight: 900;
-}
-#sidebar ul>li:last-child{
-    background-color: rgba(255, 255, 0, 0.226);
-    border: 2px groove grey;
-    margin-top: 3em;
-}
-#sidebar ul>li:last-child:hover{
-    cursor: pointer;
-    text-decoration: none;
+#sidebar ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  list-style-type: none;
+  font-size: 1.5em;
 }
 
-#sidebar ul>li button{
-    border: none;
-    background: none;
-    cursor: pointer;
-    text-decoration: none;
+#sidebar li {
+  display: flex;
+  margin: 0.2em;
+  border: 1px solid grey;
+  border-radius: 10px;
+  justify-content: space-around;
+  align-items: center;
 }
-#sidebar ul>li button:hover{
-    border: none;
-    background: none;
-    cursor: pointer;
-    text-decoration: none;
-    font-weight: 900;
+#sidebar ul > li:hover:not(.activeFilter) {
+  cursor: pointer;
+  box-shadow: 2px 2px black;
+  font-weight: 900;
 }
-#sidebar li.activeFilter{
-    font-weight: 600;
-    border-radius: 10px;
-    border-top: 2px groove black;
-    border-bottom: 2px groove black;
-    background: rgb(226,152,152);
-    background: linear-gradient(278deg, rgba(226,152,152,1) 0%, rgba(222,89,89,0.35898109243697474) 50%, rgba(226,152,152,1) 100%);
+#sidebar ul > li:last-child {
+  background-color: rgba(255, 255, 0, 0.226);
+  border: 2px groove grey;
+  margin-top: 3em;
 }
-
-
-#content{
-    grid-column: 2;
-    grid-row: 2;
-    
-    overflow: visible;
-    
-    display: flex;
-    flex-direction: column;
-    
-    align-items: center;
-    justify-items: start;
-    
+#sidebar ul > li:last-child:hover {
+  cursor: pointer;
+  text-decoration: none;
 }
 
-#content>h3{
-    position: sticky;
-    z-index: 9;
-    top: 0vh;
-    margin: 1em 2em;
-    font-size: 2em;
+#sidebar ul > li button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+#sidebar ul > li button:hover {
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 900;
+}
+#sidebar li.activeFilter {
+  font-weight: 600;
+  border-radius: 10px;
+  border-top: 2px groove black;
+  border-bottom: 2px groove black;
+  background: rgb(226, 152, 152);
+  background: linear-gradient(
+    278deg,
+    rgba(226, 152, 152, 1) 0%,
+    rgba(222, 89, 89, 0.35898109243697474) 50%,
+    rgba(226, 152, 152, 1) 100%
+  );
 }
 
-#content>h3::before{
-    content: ' ';
-    z-index: -1;
-    position: absolute;
-    left: -200%;
-    background-color: whitesmoke;
-    height: 100%;
-    width: 200vW;
-    overflow: visible;
+#content {
+  grid-column: 2;
+  grid-row: 2;
+
+  overflow: visible;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-items: start;
 }
 
-.clearTasks{
-    border-radius: 10px;
-    border: 2px ridge black;
-    background-color: aquamarine;
-    margin-left: 1em;
-    padding: 0em 0.5em;
+#content > h3 {
+  position: sticky;
+  z-index: 9;
+  top: 0vh;
+  margin: 1em 2em;
+  font-size: 2em;
 }
 
-.clearTasks:hover{
-    cursor: pointer;
-    box-shadow: 2px 2px 2px black;
+#content > h3::before {
+  content: " ";
+  z-index: -1;
+  position: absolute;
+  left: -200%;
+  background-color: whitesmoke;
+  height: 100%;
+  width: 200vw;
+  overflow: visible;
 }
 
-#content ul{
-    padding-top: 1em;
-    width: min(50vw, 100%);
+.clearTasks {
+  border-radius: 10px;
+  border: 2px ridge black;
+  background-color: aquamarine;
+  margin-left: 1em;
+  padding: 0em 0.5em;
 }
 
-#content ul>li{
-    list-style-type: none;
-    min-width: 100%;
-
-    border: 2px solid rgba(128, 128, 128, 0.9);
-    background-color: azure;
-    border-radius: 1em;
-    margin-bottom: 0.3em;
-    box-shadow: 2px 2px 2px grey;
-
-    display: flex;
-    align-items: center;
-    gap: 1em;
-    justify-content: space-between;
-    align-self: center;   
+.clearTasks:hover {
+  cursor: pointer;
+  box-shadow: 2px 2px 2px black;
 }
 
-#content ul>li[priorityTask]{
-    border-color: red;
-    box-shadow: inset 0px 0px 2px 2px red;
+#content ul {
+  padding-top: 1em;
+  width: min(50vw, 100%);
 }
-#content ul>li>.dueToDate::before{
-    content: "Due to: ";
+
+#content ul > li {
+  list-style-type: none;
+  min-width: 100%;
+
+  border: 2px solid rgba(128, 128, 128, 0.9);
+  background-color: azure;
+  border-radius: 1em;
+  margin-bottom: 0.3em;
+  box-shadow: 2px 2px 2px grey;
+
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  justify-content: space-between;
+  align-self: center;
+}
+
+#content ul > li[priorityTask] {
+  border-color: red;
+  box-shadow: inset 0px 0px 2px 2px red;
+}
+#content ul > li > .dueToDate::before {
+  content: "Due to: ";
 }
 
 #content .openTaskForm {
-    color: grey;
-    border: 2px solid rgba(128, 128, 128, 0.5);
-    border-radius: 1em;
-    display: flex;
-    justify-content: flex-start;
+  color: grey;
+  border: 2px solid rgba(128, 128, 128, 0.5);
+  border-radius: 1em;
+  display: flex;
+  justify-content: flex-start;
 }
 
-
-:not(.openTaskForm)>.mark{
-    content: url("./assets/check.svg");
+:not(.openTaskForm) > .mark {
+  content: url("./assets/check.svg");
 }
-img:hover{
-    background-color: rgb(0, 255, 0);
+img:hover {
+  background-color: rgb(0, 255, 0);
 }
-.finished .mark{
-    content: url('./assets/arrow-u-left-bottom.svg');
+.finished .mark {
+  content: url("./assets/arrow-u-left-bottom.svg");
 }
-.finished .mark:hover{
-    background-color: rgba(0, 128, 0, 0.5);
-    content: url('./assets/arrow-u-left-bottom.svg');
+.finished .mark:hover {
+  background-color: rgba(0, 128, 0, 0.5);
+  content: url("./assets/arrow-u-left-bottom.svg");
 }
-#content > ul > li:hover{
-    cursor: pointer;
-    transform: scale(105%);
-    transition: 0.05s;
-}
-
-#content .openTaskForm:hover, img:hover{
-    cursor: pointer;
-    background-color: aqua;
-    border-color: black;
-    color: black;
-}
-#content .openTaskForm img{
-    content: url("./assets/plus.svg");
+#content > ul > li:hover {
+  cursor: pointer;
+  transform: scale(105%);
+  transition: 0.05s;
 }
 
-#content .openTaskForm.formOpen{
-    
-
-    justify-content: center;
-    cursor: default;
-    background-color: whitesmoke;    
-    border: 2px solid rgba(128, 128, 128, 0.5);
-    color: black;
-    transition: 0.1s cubic-bezier(0.785, 0.135, 0.15, 0.86)
+#content .openTaskForm:hover,
+img:hover {
+  cursor: pointer;
+  background-color: aqua;
+  border-color: black;
+  color: black;
+}
+#content .openTaskForm img {
+  content: url("./assets/plus.svg");
 }
 
-form{
-
-    color: black;
-    display: grid;
-    padding: 0.3em;
-    gap: 5px;
-
-    width: fit-content;
-
-    grid-template-columns: 1fr 4fr;
-    position: relative;
-}
-form button{
-    border-radius: 1em;
-    padding: 0.3em;
-    font-size: 1em;
+#content .openTaskForm.formOpen {
+  justify-content: center;
+  cursor: default;
+  background-color: whitesmoke;
+  border: 2px solid rgba(128, 128, 128, 0.5);
+  color: black;
+  transition: 0.1s cubic-bezier(0.785, 0.135, 0.15, 0.86);
 }
 
-form#projOptions{
-    z-index: 1;
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    background-color: antiquewhite;
-    border: 2px ridge black;
-    border-radius: 10px;
-    bottom: 0%;
-    left: 100%;
-    pointer-events: none;
+form {
+  color: black;
+  display: grid;
+  padding: 0.3em;
+  gap: 5px;
+
+  width: fit-content;
+
+  grid-template-columns: 1fr 4fr;
+  position: relative;
 }
-form#projOptions>:nth-child(n){
-    pointer-events:all;
+form button {
+  border-radius: 1em;
+  padding: 0.3em;
+  font-size: 1em;
 }
 
+form#projOptions {
+  z-index: 1;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background-color: antiquewhite;
+  border: 2px ridge black;
+  border-radius: 10px;
+  bottom: 0%;
+  left: 100%;
+  pointer-events: none;
+}
+form#projOptions > :nth-child(n) {
+  pointer-events: all;
+}
 
-#content ul>li.taskExpanded{
-    display: grid;
-    width: max(fit-content, 100%);
-    grid-template-areas:
+#content ul > li.taskExpanded {
+  display: grid;
+  width: max(fit-content, 100%);
+  grid-template-areas:
     "title title title dueToDate"
     "description description description description"
-    "mark delete edit changeProject" ;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    padding: 2em;
-    gap: 1.4em;
-    transition: 0.1s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    "mark delete edit changeProject";
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  padding: 2em;
+  gap: 1.4em;
+  transition: 0.1s cubic-bezier(0.785, 0.135, 0.15, 0.86);
 }
-#content ul>li.taskExpanded>:nth-child(n):not(img){
-    border: 1px solid grey;
-    border-radius: 0 10px 10px 0px;
-    padding: 0.1em;
-}
-
-#content ul>li.taskExpanded>.title{
-    grid-area: title;
-    position: relative;
-}
-#content ul>li.taskExpanded>.title::before{
-    content: 'Title:';
-    bottom: 100%;
-    position: absolute;
+#content ul > li.taskExpanded > :nth-child(n):not(img) {
+  border: 1px solid grey;
+  border-radius: 0 10px 10px 0px;
+  padding: 0.1em;
 }
 
-#content ul>li.taskExpanded>.description{
-    grid-area: description;
-    position: relative;
+#content ul > li.taskExpanded > .title {
+  grid-area: title;
+  position: relative;
 }
-#content ul>li.taskExpanded>.description::before{
-    content: 'Description:';
-    bottom: 100%;
-    position: absolute;
-}
-
-#content ul>li.taskExpanded>.dueToDate{
-    grid-area: dueToDate;
-    position: relative;
-    padding-left: 1em;
-}
-.dueToDate{
-    border: none;
-    width: max-content;
-    border-radius: 20px 0px;
-    padding-right: 4em;
+#content ul > li.taskExpanded > .title::before {
+  content: "Title:";
+  bottom: 100%;
+  position: absolute;
 }
 
-#content ul>li.taskExpanded>.dueToDate::before{
-    content: 'Due to:';
-    bottom: 100%;
-    left: -10%;
-    position: absolute;
+#content ul > li.taskExpanded > .description {
+  grid-area: description;
+  position: relative;
 }
-.dueToDate::after{
-    position: absolute;
-    left: 80%;
-    width: max-content;
+#content ul > li.taskExpanded > .description::before {
+  content: "Description:";
+  bottom: 100%;
+  position: absolute;
 }
 
-.isToday>.dueToDate::after{
-    content: "Today";
+#content ul > li.taskExpanded > .dueToDate {
+  grid-area: dueToDate;
+  position: relative;
+  padding-left: 1em;
 }
-.isTomorrow>.dueToDate::after{
-    content: "Tomorrow";
-}
-.isWithinWeek>.dueToDate::after{
-    content: "Within a week"
-}
-.isQuiteAway>.dueToDate::after{
-    content: "Within a month"
-}
-.isLate>.dueToDate::after{
-    content: "Missed deadline"
+.dueToDate {
+  border: none;
+  width: max-content;
+  border-radius: 20px 0px;
+  padding-right: 4em;
 }
 
-#content ul>li.taskExpanded>.dueToDate::after{
-bottom: 100%;
-left: 50%;
+#content ul > li.taskExpanded > .dueToDate::before {
+  content: "Due to:";
+  bottom: 100%;
+  left: -10%;
+  position: absolute;
+}
+.dueToDate::after {
+  position: absolute;
+  left: 80%;
+  width: max-content;
 }
 
-img.editButton{
-    grid-area: edit;
-    content: url('./assets/lead-pencil.svg');
-    border: none;
+.isToday > .dueToDate::after {
+  content: "Today";
 }
-img.mark{
-    grid-area: mark;
-    border: none;
+.isTomorrow > .dueToDate::after {
+  content: "Tomorrow";
 }
-img.delete{
-    grid-area: delete;
-    content: url('./assets/delete-forever.svg');
-    border: none;
+.isWithinWeek > .dueToDate::after {
+  content: "Within a week";
 }
-img.changeProject{
-    grid-area: changeProject;
-    content: url('./assets/folder-move-outline.svg');
-    border: none;
-    position: relative;
+.isQuiteAway > .dueToDate::after {
+  content: "Within a month";
+}
+.isLate > .dueToDate::after {
+  content: "Missed deadline";
 }
 
-#content img{
-    width: 1.5em;
-    height: 1.5em;
-    max-width: 1.5em;
-    max-height: 1.5em;
-    border: 2px solid grey;
-    border-radius: 50%;
-    justify-self: center;
+#content ul > li.taskExpanded > .dueToDate::after {
+  bottom: 100%;
+  left: 50%;
 }
 
+img.editButton {
+  grid-area: edit;
+  content: url("./assets/lead-pencil.svg");
+  border: none;
+}
+img.mark {
+  grid-area: mark;
+  border: none;
+}
+img.delete {
+  grid-area: delete;
+  content: url("./assets/delete-forever.svg");
+  border: none;
+}
+img.changeProject {
+  grid-area: changeProject;
+  content: url("./assets/folder-move-outline.svg");
+  border: none;
+  position: relative;
+}
+
+#content img {
+  width: 1.5em;
+  height: 1.5em;
+  max-width: 1.5em;
+  max-height: 1.5em;
+  border: 2px solid grey;
+  border-radius: 50%;
+  justify-self: center;
+}
