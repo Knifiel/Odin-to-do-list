@@ -210,7 +210,6 @@ export const ui = {
     makeLiFromProps: (todo, ...props) => makeLiFromProps(todo, ...props),
     editDiv: (div) => editDiv(div),
     makeImg: (text) => makeImg(text),
-    disableAllButTarget: (target) => disableAllButTarget(target),
 
     header: header,
     sidebar: sidebar,

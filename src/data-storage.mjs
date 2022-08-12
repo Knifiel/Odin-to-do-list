@@ -1,4 +1,4 @@
-import { format, isPast } from "date-fns";
+import { format } from "date-fns";
 
 class Task{
     constructor(project, title, description, dueToDate, priority){

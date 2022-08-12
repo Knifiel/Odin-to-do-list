@@ -27,7 +27,7 @@ export function makeSidebar(activeProject){
             renderTasks(activeProject);
         }
         
-        li.addEventListener('click', (e) =>{
+        li.addEventListener('click', () =>{
             if(li.classList.contains('activeFilter')){
                 return;
             }
@@ -51,7 +51,7 @@ export function makeSidebar(activeProject){
             const currentActiveProject = ul.childNodes.forEach(node =>{
                 if(node.classList.contains('activeFilter')){
                     return node.dataset.project;
-                };
+                }
             });
             makeSidebar(currentActiveProject);
         });
@@ -257,7 +257,7 @@ const refDate = new Date();
                     }
                     for (const pair of formData.entries()) {
                         storage.changeProp(task, pair[0], pair[1]);
-                      };
+                      }
                     renderTasks(project);
                 } else {
                     form.reportValidity();
@@ -335,7 +335,7 @@ function openAddForm(e, li){
 }
 
 export function enableSaving(){
-window.addEventListener("beforeunload", function(e){
+window.addEventListener("beforeunload", function(){
     storage.save();
  }, false);
 window.addEventListener('input', (e) => {
